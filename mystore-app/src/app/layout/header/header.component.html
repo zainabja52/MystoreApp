@@ -1,0 +1,24 @@
+<header class="header">
+  <div class="header-content">
+    <h1>
+      <a routerLink="/">MyStore</a>
+    </h1>
+    <nav>
+      <ul class="nav-links">
+        <li>
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            Products
+          </a>
+        </li>
+        <li>
+          <a routerLink="/cart" routerLinkActive="active">
+            Cart
+            <span class="cart-badge" *ngIf="(cartItemCount$ | async) as count">
+              {{ count }}
+            </span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

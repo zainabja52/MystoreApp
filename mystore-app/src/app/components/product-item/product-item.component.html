@@ -1,0 +1,42 @@
+<div class="product-container">
+  <div class="product-image">
+    <a [routerLink]="['/product', product.id]">
+      <img [src]="product.url" [alt]="product.name" />
+    </a>
+    <h3>
+      <a [routerLink]="['/product', product.id]">{{ product.name }}</a>
+    </h3>
+    <p class="price">${{ product.price }}</p>
+    
+    <div class="add-to-cart-section">
+      <label for="quantity-{{ product.id }}">Quantity:</label>
+      <select 
+        id="quantity-{{ product.id }}"
+        class="select-input" 
+        [(ngModel)]="selectedQuantity"
+        (ngModelChange)="onQuantityChange()">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+      
+      <button 
+        type="button" 
+        class="add-to-cart-btn"
+        (click)="addToCart()">
+        Add to Cart
+      </button>
+      
+      <div class="added-message" *ngIf="showAddedMessage">
+        ✓ Added to cart!
+      </div>
+    </div>
+  </div>
+</div>

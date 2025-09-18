@@ -1,0 +1,62 @@
+<div class="detail-container" *ngIf="product$ | async as product; else notFound">
+  <div class="detail-item">
+    <div class="product-image-section">
+      <img [src]="product.url" [alt]="product.name" />
+    </div>
+    
+    <div class="product-info-section">
+      <h1>{{ product.name }}</h1>
+      <p class="price">${{ product.price }}</p>
+      <p class="description">{{ product.description }}</p>
+      
+      <div class="purchase-section">
+        <div class="quantity-section">
+          <label for="quantity">Quantity:</label>
+          <select 
+            id="quantity"
+            class="select-input" 
+            [(ngModel)]="selectedQuantity"
+            (ngModelChange)="onQuantityChange()">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+        
+        <button 
+          type="button" 
+          class="add-to-cart-btn"
+          (click)="addToCart(product)">
+          Add to Cart
+        </button>
+        
+        <div class="added-message" *ngIf="showAddedMessage">
+          ✓ {{ selectedQuantity }} {{ product.name }}(s) added to cart!
+        </div>
+      </div>
+      
+      <div class="back-link">
+        <button type="button" class="back-btn" (click)="goBack()">
+          ← Back to Products
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #notFound>
+  <div class="not-found">
+    <h2>Product Not Found</h2>
+    <p>The product you're looking for doesn't exist.</p>
+    <button type="button" class="back-btn" (click)="goBack()">
+      ← Back to Products
+    </button>
+  </div>
+</ng-template>
