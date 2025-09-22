@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Product } from '../../models/product.model';
 import { CartService } from '../../services/cart.service';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-product-item',
@@ -16,6 +17,7 @@ export class ProductItemComponent implements OnInit {
   @Input() product!: Product;
   selectedQuantity: number = 1;
   showAddedMessage: boolean = false;
+    @Output() addedToCart = new EventEmitter<{product: Product, quantity: number}>();
 
   constructor(private cartService: CartService) { }
 
@@ -27,7 +29,8 @@ export class ProductItemComponent implements OnInit {
    */
   addToCart(): void {
     if (this.product && this.selectedQuantity > 0) {
-      this.cartService.addToCart(this.product, this.selectedQuantity);
+        this.cartService.addToCart(this.product, this.selectedQuantity);
+        this.addedToCart.emit({ product: this.product, quantity: this.selectedQuantity });
       this.showAddedMessage = true;
       
       // Hide the message after 2 seconds

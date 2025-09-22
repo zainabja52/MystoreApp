@@ -16,6 +16,9 @@ import { CartService } from '../../services/cart.service';
 export class CartComponent implements OnInit {
   cart$: Observable<Cart>;
 
+    showRemoveMessage: boolean = false;
+    removedProductName: string = '';
+
   constructor(private cartService: CartService) {
     this.cart$ = this.cartService.getCart$();
   }
@@ -34,7 +37,19 @@ export class CartComponent implements OnInit {
    * Remove an item from the cart
    */
   removeItem(productId: number): void {
+    // Find product name for feedback
+    this.cart$.subscribe(cart => {
+      const removedItem = cart.items.find(item => item.product.id === productId);
+      if (removedItem) {
+        this.removedProductName = removedItem.product.name;
+      }
+    }).unsubscribe();
     this.cartService.removeFromCart(productId);
+    this.showRemoveMessage = true;
+    setTimeout(() => {
+      this.showRemoveMessage = false;
+      this.removedProductName = '';
+    }, 2000);
   }
 
   /**

@@ -1,5 +1,9 @@
 <div class="cart-container" *ngIf="cart$ | async as cart">
+
   <h2>Shopping Cart</h2>
+  <div *ngIf="showRemoveMessage" class="removed-message">
+    ✓ {{ removedProductName }} removed from cart!
+  </div>
   
   <!-- Empty cart message -->
   <div class="empty-cart-message" *ngIf="cart.items.length === 0">

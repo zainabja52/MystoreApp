@@ -1,9 +1,13 @@
 <div class="product-container">
   <h2>Our Products</h2>
+  <div *ngIf="showAddedMessage" class="added-message">
+    ✓ {{ addedQuantity }} {{ addedProductName }}(s) added to cart!
+  </div>
   <div class="product-index">
     <app-product-item 
       *ngFor="let product of products$ | async" 
-      [product]="product">
+      [product]="product"
+      (addedToCart)="onProductAdded($event)">
     </app-product-item>
   </div>
 </div>

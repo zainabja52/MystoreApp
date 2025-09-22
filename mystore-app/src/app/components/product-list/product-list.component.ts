@@ -15,10 +15,24 @@ import { ProductItemComponent } from '../product-item/product-item.component';
 export class ProductListComponent implements OnInit {
   products$: Observable<Product[]>;
 
+    showAddedMessage: boolean = false;
+    addedProductName: string = '';
+    addedQuantity: number = 1;
+
   constructor(private productService: ProductService) {
     this.products$ = this.productService.getProducts();
   }
 
   ngOnInit(): void {
   }
+
+    onProductAdded(event: {product: Product, quantity: number}) {
+      this.addedProductName = event.product.name;
+      this.addedQuantity = event.quantity;
+      this.showAddedMessage = true;
+      setTimeout(() => {
+        this.showAddedMessage = false;
+        this.addedProductName = '';
+      }, 2000);
+    }
 }
