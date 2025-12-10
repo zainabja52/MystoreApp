@@ -80,8 +80,6 @@ export class CheckoutComponent implements OnInit {
   onSubmit(): void {
     if (this.validateForm()) {
       this.isSubmitting = true;
-      
-      // Get current cart
       this.cartService.getCart$().subscribe(cart => {
         if (cart.items.length === 0) {
           alert('Your cart is empty!');
@@ -99,12 +97,10 @@ export class CheckoutComponent implements OnInit {
 
         // Simulate order processing delay
         setTimeout(() => {
-          // Clear the cart
-          this.cartService.clearCart();
-          
           // Navigate to confirmation page with order data
-          this.router.navigate(['/confirmation'], { 
-            state: { order } 
+          // Don't clear cart here - let confirmation page handle it
+          this.router.navigate(['/confirmation'], {
+            state: { order }
           });
         }, 1500);
       });

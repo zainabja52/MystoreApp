@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Order } from '../../models/user.model';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-confirmation',
@@ -10,15 +11,28 @@ import { Order } from '../../models/user.model';
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.css']
 })
-export class ConfirmationComponent implements OnInit {
+export class ConfirmationComponent implements OnInit, OnDestroy {
   order: Order | null = null;
   orderNumber: string = '';
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private cartService: CartService
+  ) {
     // Get order data from navigation state
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
       this.order = navigation.extras.state['order'];
+      // Store order in sessionStorage as backup
+      if (this.order) {
+        sessionStorage.setItem('lastOrder', JSON.stringify(this.order));
+      }
+    } else {
+      // Try to retrieve from sessionStorage if navigation state is lost
+      const storedOrder = sessionStorage.getItem('lastOrder');
+      if (storedOrder) {
+        this.order = JSON.parse(storedOrder);
+      }
     }
   }
 
@@ -31,6 +45,13 @@ export class ConfirmationComponent implements OnInit {
 
     // Generate a random order number
     this.orderNumber = this.generateOrderNumber();
+  }
+
+  ngOnDestroy(): void {
+    // Clear the cart when leaving the confirmation page
+    this.cartService.clearCart();
+    // Clear the stored order from sessionStorage
+    sessionStorage.removeItem('lastOrder');
   }
 
   /**
